@@ -1,0 +1,6 @@
+@PharmacyDB_HostAddress = http://localhost:5208
+
+GET {{PharmacyDB_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
