@@ -38,8 +38,8 @@ public class MyRepository : ImyRepository
             dtoDoctorAndPerscription._doctor.Email = (string)reader["Email"];
             
             sqlCommand.Parameters.Clear();
-            sqlCommand.CommandText = $"SELECT * FROM Prescription" +
-                                     $" WHERE IdDoctor = @idDoc ";
+            sqlCommand.CommandText = $"SELECT * FROM Prescription" +   //when splitting like this be careful cause looks good but in reality is missing a [space]
+                                     $" WHERE IdDoctor = @idDoc ";     // $" SELECT * FROM PrescriptionWHERE IdDoctor = @idDoc "
             sqlCommand.Parameters.AddWithValue("@idDoc", idDoc);
             reader.Dispose();
             
@@ -48,7 +48,7 @@ public class MyRepository : ImyRepository
             {
                 var record = new Perscription();
                 record.IdPrescription = (int)reader["IdPrescription"];
-                record.date = (DateTime)reader["Date"];
+                record.date = (DateTime)reader["Date"];                                                    // always date time ig , i had dateonly and it was wrong
                 record.dueDate = (DateTime)reader["DueDate"];
                 record.IdPatient = (int)reader["IdPatient"];
                 record.IdDoctor = (int)reader["IdDoctor"];
@@ -79,7 +79,7 @@ public class MyRepository : ImyRepository
         sqlCommand.Transaction = (SqlTransaction)transaction;
         int affectedcount = 0;
         
-        try
+        try                                                                                                             // had a wrong order of deleting that gave errors of confliction
         {
             sqlCommand.CommandText = $"DELETE FROM Prescription_Medicament WHERE IdPrescription " +
                                      $"IN (SELECT IdPrescription FROM Prescription WHERE IdDoctor = @idDoc)";
